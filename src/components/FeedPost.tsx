@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MoreHorizontal, Smile } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { MoreHorizontal, Smile, Trash2 } from 'lucide-react';
 import { cn } from '../utils/utils';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { currentUser } from '../data/mockData';
@@ -23,13 +23,26 @@ interface PostProps {
     likes: number;
     comments: number;
     reposts: number;
-  }
+  };
+  onDelete?: (id: string) => void;
 }
 
-const FeedPost: React.FC<PostProps> = ({ post }) => {
+const FeedPost: React.FC<PostProps> = ({ post, onDelete }) => {
   const [likedPosts, setLikedPosts] = useLocalStorage<Record<string, boolean>>('likedPosts', {});
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   
   const liked = !!likedPosts[post.id];
   const likesCount = post.likes + (liked ? 1 : 0);
@@ -60,9 +73,29 @@ const FeedPost: React.FC<PostProps> = ({ post }) => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-gray-500"><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
               </div>
             </div>
-            <button className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-full transition-colors ml-2" aria-label="More options">
-              <MoreHorizontal size={20} />
-            </button>
+            <div className="relative" ref={dropdownRef}>
+              <button 
+                onClick={() => setShowDropdown(!showDropdown)} 
+                className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-full transition-colors ml-2" 
+                aria-label="More options"
+              >
+                <MoreHorizontal size={20} />
+              </button>
+              
+              {showDropdown && (
+                <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-[#1d2226] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-10 py-1">
+                  <button 
+                    onClick={() => {
+                      if (onDelete) onDelete(post.id);
+                      setShowDropdown(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2 font-medium"
+                  >
+                    <Trash2 size={16} /> Delete Post
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

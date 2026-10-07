@@ -49,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, theme }) => {
               <input 
                 type="text" 
                 placeholder="Search" 
-                className="w-full h-[34px] pl-10 pr-4 bg-[#edf3f8] dark:bg-[#38434f] text-sm text-gray-900 dark:text-gray-100 rounded transition-colors outline-none border-2 border-transparent focus:border-gray-900 dark:focus:border-white focus:bg-white dark:focus:bg-[#1d2226] placeholder-gray-600 dark:placeholder-gray-400 font-normal"
+                className="w-full h-[34px] pl-10 pr-4 bg-[#edf3f8] dark:bg-[#38434f] text-sm text-gray-900 dark:text-gray-100 rounded-full transition-colors outline-none border-2 border-transparent focus:border-gray-900 dark:focus:border-white focus:bg-white dark:focus:bg-[#1d2226] placeholder-gray-600 dark:placeholder-gray-400 font-normal"
               />
             </div>
             <button className="md:hidden p-2 text-gray-600 dark:text-gray-300 ml-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Search">

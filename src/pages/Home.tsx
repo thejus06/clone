@@ -26,6 +26,10 @@ const Home: React.FC = () => {
     setPosts([newPost, ...posts]);
   };
 
+  const handleDeletePost = (id: string) => {
+    setPosts(posts.filter((post: any) => post.id !== id));
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
       
@@ -59,8 +63,8 @@ const Home: React.FC = () => {
           </span>
         </div>
 
-        {posts.map(post => (
-          <FeedPost key={post.id} post={post} />
+        {posts.map((post: any) => (
+          <FeedPost key={post.id} post={post} onDelete={handleDeletePost} />
         ))}
       </div>
 
