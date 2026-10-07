@@ -22,27 +22,29 @@ const Profile: React.FC = () => {
           </div>
           
           <div className="px-4 sm:px-6 pb-6 relative">
-            <div className="absolute -top-[50px] sm:-top-[76px] left-4 sm:left-6">
-              <img 
-                src={currentUser.avatar} 
-                alt={currentUser.name} 
-                className="w-[100px] h-[100px] sm:w-[152px] sm:h-[152px] rounded-full border-4 border-white dark:border-[#1d2226] bg-white dark:bg-gray-800 object-cover cursor-pointer hover:opacity-90 transition-opacity"
-              />
-            </div>
-            
-            <div className="flex justify-end pt-4 gap-2 flex-wrap">
-              <button className="bg-brand-600 text-white font-semibold px-4 py-1.5 rounded-full hover:bg-brand-700 transition-colors text-sm sm:text-base">
-                Open to
-              </button>
-              <button className="border border-brand-600 text-brand-600 font-semibold px-4 py-1.5 rounded-full hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-colors text-sm sm:text-base">
-                Add profile section
-              </button>
-              <button className="border border-gray-500 text-gray-600 dark:text-gray-300 font-semibold px-4 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm sm:text-base">
-                More
-              </button>
+            <div className="flex justify-between items-start mb-2 sm:mb-4">
+              <div className="-mt-[50px] sm:-mt-[76px]">
+                <img 
+                  src={currentUser.avatar} 
+                  alt={currentUser.name} 
+                  className="w-[100px] h-[100px] sm:w-[152px] sm:h-[152px] rounded-full border-4 border-white dark:border-[#1d2226] bg-white dark:bg-gray-800 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                />
+              </div>
+              
+              <div className="flex justify-end pt-3 gap-2 flex-wrap">
+                <button className="bg-[#0a66c2] text-white font-semibold px-4 py-1.5 rounded-full hover:bg-blue-800 transition-colors text-sm sm:text-base">
+                  Open to
+                </button>
+                <button className="border border-[#0a66c2] text-[#0a66c2] dark:text-[#70b5f9] dark:border-[#70b5f9] font-semibold px-4 py-1.5 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm sm:text-base">
+                  Add profile section
+                </button>
+                <button className="border border-gray-500 text-gray-600 dark:text-gray-300 font-semibold px-4 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm sm:text-base">
+                  More
+                </button>
+              </div>
             </div>
 
-            <div className="mt-8 sm:mt-2">
+            <div className="mt-2 sm:mt-0">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 {currentUser.name}
                 <svg className="w-5 h-5 text-brand-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
