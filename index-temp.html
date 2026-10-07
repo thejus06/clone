@@ -1,0 +1,1376 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Clone</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f4f2ee;
+            color: rgba(0, 0, 0, .9);
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .topbar {
+            height: 52px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            height: 52px;
+            max-width: 1128px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 34px;
+            height: 34px;
+            background: #0a66c2;
+            color: white;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .search {
+            width: 280px;
+            height: 34px;
+            background: #edf3f8;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            color: #666;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .search:focus-within {
+            width: 380px;
+            background: #fff;
+            border: 2px solid #111;
+            padding: 0 14px;
+        }
+
+        .search svg {
+            color: #666;
+        }
+
+        .search:focus-within svg {
+            color: #111;
+        }
+
+        .search input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 14px;
+            color: #111;
+        }
+
+        .nav-items {
+            margin-left: auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item {
+            height: 52px;
+            min-width: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: #111;
+        }
+
+        .nav-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            margin-bottom: 2px;
+        }
+        
+        .nav-icon svg {
+            color: #666;
+        }
+
+        .nav-item:hover .nav-icon svg,
+        .nav-item.active .nav-icon svg {
+            color: #111;
+        }
+
+        .nav-item.active {
+            color: #111;
+        }
+
+        .nav-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: #111;
+        }
+
+        .me-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #111, #777);
+            margin-bottom: 1px;
+        }
+
+        .divider {
+            width: 1px;
+            height: 32px;
+            background: #ddd;
+            margin: 0 10px;
+        }
+
+        .premium {
+            color: #915907;
+            font-size: 11px;
+            text-align: center;
+            max-width: 85px;
+        }
+
+        /* MAIN */
+
+        .container {
+            width: 1128px;
+            margin: 76px auto 40px;
+            display: grid;
+            grid-template-columns: 225px 540px 300px;
+            gap: 16px;
+        }
+
+        /* LEFT */
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .profile-card {
+            text-align: center;
+        }
+
+        .cover {
+            height: 58px;
+            background: linear-gradient(135deg, #566b78, #a9b6bc);
+        }
+
+        .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: linear-gradient(135deg, #111, #777);
+            margin: -38px auto 8px;
+            position: relative;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .profile-title {
+            font-size: 12px;
+            color: #666;
+            padding: 4px 15px 14px;
+        }
+
+        .profile-stats {
+            border-top: 1px solid #eee;
+            padding: 12px 12px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 9px;
+        }
+
+        .stat:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-value {
+            color: #0a66c2;
+            font-weight: 600;
+        }
+
+        .left-menu {
+            margin-top: 8px;
+        }
+
+        .menu-row {
+            padding: 10px 14px;
+            font-size: 13px;
+            display: flex;
+            gap: 9px;
+            cursor: pointer;
+        }
+
+        .menu-row:hover {
+            background: #f3f3f3;
+        }
+
+        .menu-icon {
+            width: 20px;
+        }
+
+        /* CENTER */
+
+        .create-post {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .post-top {
+            display: flex;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #111, #888);
+            flex-shrink: 0;
+        }
+
+        .post-input {
+            border: 1px solid #777;
+            border-radius: 30px;
+            height: 48px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding-left: 18px;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .post-input:hover {
+            background: #f3f3f3;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .post-action {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px;
+            color: #555;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .post-action:hover {
+            background: #eee;
+        }
+
+        .action-icon {
+            font-size: 21px;
+            margin-right: 6px;
+        }
+
+        /* FEED */
+
+        .sort {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            color: #777;
+            font-size: 11px;
+        }
+
+        .sort::before {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ccc;
+            margin-right: 8px;
+        }
+
+        .sort::after {
+            content: "";
+            width: 0;
+        }
+
+        .sort strong {
+            color: #222;
+            margin-left: 3px;
+        }
+
+        .post {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            padding: 14px 16px;
+        }
+
+        .post-header {
+            display: flex;
+            gap: 10px;
+        }
+
+        .post-info {
+            flex: 1;
+        }
+
+        .post-author {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .post-time {
+            font-size: 11px;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .more {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .post-text {
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 12px 0;
+        }
+
+        .post-image {
+            width: calc(100% + 32px);
+            margin-left: -16px;
+            height: 290px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #14213d, #4776e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 38px;
+            font-weight: 700;
+        }
+
+        .engagement {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 12px;
+            padding: 9px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .reactions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-buttons {
+            display: flex;
+            margin-top: 3px;
+        }
+
+        .post-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 9px 3px;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .post-btn:hover {
+            background: #eee;
+        }
+
+        .post-btn.liked {
+            color: #0a66c2;
+        }
+
+        /* RIGHT */
+
+        .news-card {
+            padding: 16px;
+        }
+
+        .news-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .news-item {
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .news-item:hover .headline {
+            text-decoration: underline;
+        }
+
+        .headline {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .news-meta {
+            color: #777;
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .trending {
+            margin-top: 8px;
+        }
+
+        .trending h3 {
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .trend {
+            padding: 8px 0;
+            cursor: pointer;
+        }
+
+        .trend-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .trend-meta {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 5px;
+            font-size: 11px;
+            color: #777;
+            line-height: 1.8;
+        }
+
+        /* MODAL */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 550px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close {
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .modal textarea {
+            width: 100%;
+            height: 180px;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .modal-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-tools {
+            display: flex;
+            gap: 18px;
+            font-size: 22px;
+        }
+
+        .post-submit {
+            border: none;
+            background: #0a66c2;
+            color: white;
+            border-radius: 20px;
+            padding: 9px 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .post-submit:hover {
+            background: #004182;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 1000px) {
+            .container {
+                width: 95%;
+                grid-template-columns: 225px 1fr;
+            }
+
+            .right-column {
+                display: none;
+            }
+        }
+
+        @media(max-width: 700px) {
+            .container {
+                width: 100%;
+                margin-top: 60px;
+                display: block;
+            }
+
+            .left-column {
+                display: none;
+            }
+
+            .nav {
+                padding: 0 10px;
+            }
+
+            .search {
+                width: 150px;
+            }
+
+            .nav-item {
+                min-width: 45px;
+            }
+
+            .premium,
+            .divider {
+                display: none;
+            }
+
+            .post,
+            .create-post {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <header class="topbar">
+        <nav class="nav">
+
+            <div class="logo">in</div>
+
+            <div class="search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21.41 18.59l-5.27-5.28A6.83 6.83 0 0017 10a7 7 0 10-7 7 6.83 6.83 0 003.31-.86l5.28 5.27a2 2 0 002.82-2.82zM5 10a5 5 0 115 5 5 5 0 01-5-5z"></path></svg>
+                <input id="searchInput" placeholder="Search">
+            </div>
+
+            <div class="nav-items">
+
+                <div class="nav-item active" onclick="activate(this)">
+                    <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path></svg></div>
+                    Notifications
+                </div>
+
+                <div class="nav-item" onclick="activate(this)">
+                    <div class="me-avatar"></div>
+                    Me
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="nav-item">
+                    <div class="nav-icon">▦</div>
+                    Work
+                </div>
+
+                <div class="premium">
+                    Try Premium<br>for free
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <!-- LEFT COLUMN -->
+
+        <aside class="left-column">
+
+            <div class="card profile-card">
+
+                <div class="cover"></div>
+
+                <div class="profile-avatar"></div>
+
+                <div class="profile-name">
+                    Thejus Pradeep
+                </div>
+
+                <div class="profile-title">
+                    Computer Science Engineering Student
+                </div>
+
+                <div class="profile-stats">
+
+                    <div class="stat">
+                        <span>Profile viewers</span>
+                        <span class="stat-value">42</span>
+                    </div>
+
+                    <div class="stat">
+                        <span>Post impressions</span>
+                        <span class="stat-value">128</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card left-menu">
+
+                <div class="menu-row">
+                    <span class="menu-icon">▣</span>
+                    Saved items
+                </div>
+
+                <div class="menu-row">
+                    <span class="menu-icon">♟</span>
+                    Groups
+                </div>
+
+                <div class="menu-row">
+                    <span class="menu-icon">▤</span>
+                    Events
+                </div>
+
+                <div class="menu-row">
+                    <span class="menu-icon">◉</span>
+                    Newsletters
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- CENTER COLUMN -->
+
+        <section class="center-column">
+
+            <!-- CREATE POST -->
+
+            <div class="create-post">
+
+                <div class="post-top">
+
+                    <div class="avatar"></div>
+
+                    <div class="post-input" onclick="openModal()">
+                        Start a post
+                    </div>
+
+                </div>
+
+                <div class="post-actions">
+
+                    <button class="post-action" onclick="openModal()">
+                        <span class="action-icon" style="display:inline-flex; vertical-align:middle; margin-right:4px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#378fe9"><path d="M19 4H5a3 3 0 00-3 3v10a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3zm1 13a1 1 0 01-.29.71L16 14l-2 2-6-8-6 9V7a1 1 0 011-1h14a1 1 0 011 1v10z"></path></svg></span>
+                        Photo
+                    </button>
+
+                    <button class="post-action" onclick="openModal()">
+                        <span class="action-icon" style="display:inline-flex; vertical-align:middle; margin-right:4px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#5f9b41"><path d="M19 4H5a3 3 0 00-3 3v10a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3zm-9 12V8l6 4z"></path></svg></span>
+                        Video
+                    </button>
+
+                    <button class="post-action" onclick="openModal()">
+                        <span class="action-icon" style="display:inline-flex; vertical-align:middle; margin-right:4px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#c37d16"><path d="M19 4h-2V2h-2v2H9V2H7v2H5a3 3 0 00-3 3v12a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3zM5 6h14a1 1 0 011 1v2H4V7a1 1 0 011-1zm14 14H5a1 1 0 01-1-1v-8h16v8a1 1 0 01-1 1z"></path></svg></span>
+                        Event
+                    </button>
+
+                    <button class="post-action" onclick="openModal()">
+                        <span class="action-icon" style="display:inline-flex; vertical-align:middle; margin-right:4px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#e16745"><path d="M21 3v2H3V3zm-6 6h6V7h-6zm0 4h6v-2h-6zm0 4h6v-2h-6zM3 21h10v-2H3zM3 7h10v10H3z"></path></svg></span>
+                        Write article
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="sort">
+                Sort by <strong>Top</strong> ▾
+            </div>
+
+
+            <!-- POST 1 -->
+
+            <article class="post">
+
+                <div class="post-header">
+
+                    <div class="avatar"></div>
+
+                    <div class="post-info">
+
+                        <div class="post-author">
+                            Alex Johnson
+                        </div>
+
+                        <div class="post-description">
+                            Software Engineer · Technology
+                        </div>
+
+                        <div class="post-time">
+                            2h · 🌐
+                        </div>
+
+                    </div>
+
+                    <div class="more">•••</div>
+
+                </div>
+
+
+                <div class="post-text">
+
+                    Excited to share that I've been working on a new
+                    project! 🚀
+
+                    <br><br>
+
+                    Building great products starts with solving real
+                    problems and learning every day.
+
+                    <br><br>
+
+                    #technology #softwareengineering #development
+
+                </div>
+
+
+                <div class="post-image">
+                    BUILD • LEARN • CREATE
+                </div>
+
+
+                <div class="engagement">
+
+                    <div class="reactions">
+                        <span>👍 ❤️</span>
+                        <span>245</span>
+                    </div>
+
+                    <div>
+                        32 comments · 12 reposts
+                    </div>
+
+                </div>
+
+
+                                <div class="post-buttons">
+
+                    <button class="post-btn" onclick="likePost(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"></path></svg> Like
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path></svg> Comment
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v5z"></path></svg> Repost
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg> Send
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- POST 2 -->
+
+            <article class="post">
+
+                <div class="post-header">
+
+                    <div class="avatar"></div>
+
+                    <div class="post-info">
+
+                        <div class="post-author">
+                            Sarah Williams
+                        </div>
+
+                        <div class="post-description">
+                            Product Designer at Design Studio
+                        </div>
+
+                        <div class="post-time">
+                            5h · 🌐
+                        </div>
+
+                    </div>
+
+                    <div class="more">•••</div>
+
+                </div>
+
+
+                <div class="post-text">
+
+                    Design isn't just about how something looks.
+
+                    It's about how it works, how it feels, and how
+                    easily people can accomplish their goals.
+
+                    <br><br>
+
+                    What's one design principle you always follow?
+
+                </div>
+
+
+                <div class="engagement">
+
+                    <div class="reactions">
+                        <span>👍 💡 ❤️</span>
+                        <span>189</span>
+                    </div>
+
+                    <div>
+                        21 comments
+                    </div>
+
+                </div>
+
+
+                                <div class="post-buttons">
+
+                    <button class="post-btn" onclick="likePost(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"></path></svg> Like
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path></svg> Comment
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v5z"></path></svg> Repost
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg> Send
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- POST 3 -->
+
+            <article class="post">
+
+                <div class="post-header">
+
+                    <div class="avatar"></div>
+
+                    <div class="post-info">
+
+                        <div class="post-author">
+                            Microsoft
+                        </div>
+
+                        <div class="post-description">
+                            Technology Company
+                        </div>
+
+                        <div class="post-time">
+                            1d · 🌐
+                        </div>
+
+                    </div>
+
+                    <div class="more">•••</div>
+
+                </div>
+
+                <div class="post-text">
+
+                    The future of work is changing rapidly.
+
+                    Here are five technologies shaping the next
+                    generation of workplaces.
+
+                    <br><br>
+
+                    #FutureOfWork #AI #Technology
+
+                </div>
+
+                <div class="engagement">
+
+                    <div class="reactions">
+                        <span>👍 ❤️ 🔥</span>
+                        <span>1,240</span>
+                    </div>
+
+                    <div>
+                        104 comments · 87 reposts
+                    </div>
+
+                </div>
+
+                                <div class="post-buttons">
+
+                    <button class="post-btn" onclick="likePost(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"></path></svg> Like
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path></svg> Comment
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v5z"></path></svg> Repost
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg> Send
+                    </button>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <aside class="right-column">
+
+            <div class="card news-card">
+
+                <div class="news-title">
+                    LinkedIn News
+                    <span>ⓘ</span>
+                </div>
+
+                <div class="news-item">
+                    <div class="headline">
+                        AI continues transforming the workplace
+                    </div>
+                    <div class="news-meta">
+                        2h ago · 8,432 readers
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <div class="headline">
+                        Technology jobs remain in demand
+                    </div>
+                    <div class="news-meta">
+                        4h ago · 5,231 readers
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <div class="headline">
+                        New trends in software development
+                    </div>
+                    <div class="news-meta">
+                        6h ago · 3,892 readers
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <div class="headline">
+                        Skills companies are looking for
+                    </div>
+                    <div class="news-meta">
+                        1d ago · 12,421 readers
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="card news-card trending">
+
+                <h3>Today's top skills</h3>
+
+                <div class="trend">
+                    <div class="trend-title">
+                        #ArtificialIntelligence
+                    </div>
+                    <div class="trend-meta">
+                        Trending in Technology
+                    </div>
+                </div>
+
+                <div class="trend">
+                    <div class="trend-title">
+                        #SoftwareEngineering
+                    </div>
+                    <div class="trend-meta">
+                        Trending
+                    </div>
+                </div>
+
+                <div class="trend">
+                    <div class="trend-title">
+                        #CareerDevelopment
+                    </div>
+                    <div class="trend-meta">
+                        Trending
+                    </div>
+                </div>
+
+                <div class="trend">
+                    <div class="trend-title">
+                        #JobSearch
+                    </div>
+                    <div class="trend-meta">
+                        Trending
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="footer">
+                About · Accessibility · Help Center<br>
+                Privacy & Terms · Ad Choices<br>
+                Advertising · Business Services<br><br>
+                LinkedIn Clone © 2026
+            </div>
+
+        </aside>
+
+    </main>
+
+
+    <!-- POST MODAL -->
+
+    <div class="modal-overlay" id="modal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div class="modal-title">
+                    Create a post
+                </div>
+
+                <div class="close" onclick="closeModal()">
+                    ×
+                </div>
+
+            </div>
+
+            <div class="post-header" style="margin-top:20px">
+
+                <div class="avatar"></div>
+
+                <div>
+                    <strong>Thejus Pradeep</strong>
+                    <div style="font-size:12px;color:#666">
+                        Post to Anyone
+                    </div>
+                </div>
+
+            </div>
+
+            <textarea id="postText" placeholder="What do you want to talk about?"></textarea>
+
+            <div class="modal-bottom">
+
+                <div class="modal-tools">
+                    📷 🎥 😊 📄
+                </div>
+
+                <button class="post-submit" onclick="publishPost()">
+                    Post
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function activate(element) {
+
+            document.querySelectorAll(".nav-item")
+                .forEach(item => item.classList.remove("active"));
+
+            element.classList.add("active");
+        }
+
+
+        function openModal() {
+
+            document.getElementById("modal")
+                .classList.add("show");
+
+            document.getElementById("postText")
+                .focus();
+        }
+
+
+        function closeModal() {
+
+            document.getElementById("modal")
+                .classList.remove("show");
+        }
+
+
+        function publishPost() {
+
+            const text =
+                document.getElementById("postText").value.trim();
+
+            if (!text) {
+                alert("Write something first.");
+                return;
+            }
+
+            const post = document.createElement("article");
+
+            post.className = "post";
+
+            post.innerHTML = `
+
+        <div class="post-header">
+
+            <div class="avatar"></div>
+
+            <div class="post-info">
+
+                <div class="post-author">
+                    Thejus Pradeep
+                </div>
+
+                <div class="post-description">
+                    Computer Science Engineering Student
+                </div>
+
+                <div class="post-time">
+                    Just now · 🌐
+                </div>
+
+            </div>
+
+            <div class="more">•••</div>
+
+        </div>
+
+        <div class="post-text">
+            ${escapeHTML(text)}
+        </div>
+
+        <div class="engagement">
+
+            <div class="reactions">
+                <span>👍</span>
+                <span>0</span>
+            </div>
+
+            <div>
+                0 comments
+            </div>
+
+        </div>
+
+                        <div class="post-buttons">
+
+                    <button class="post-btn" onclick="likePost(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"></path></svg> Like
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path></svg> Comment
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v5z"></path></svg> Repost
+                    </button>
+
+                    <button class="post-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg> Send
+                    </button>
+
+                </div>
+    `;
+
+            document.querySelector(".center-column")
+                .appendChild(post);
+
+            document.getElementById("postText").value = "";
+
+            closeModal();
+        }
+
+
+                function likePost(button) {
+            button.classList.toggle("liked");
+            if (button.classList.contains("liked")) {
+                button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#0a66c2"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"></path></svg> Liked`;
+            } else {
+                button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"></path></svg> Like`;
+            }
+        } else {
+                button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M19.46 11l-3.91-3.91a7 7 0 01-1.69-2.74l-.49-1.47A2.76 2.76 0 0010.76 1 2.75 2.75 0 008 3.74v4.24H3v1.59l2 8.57A2 2 0 006.94 20h9a2 2 0 002-1.56l2.17-8.73A1 1 0 0020 9h-6l5.46-5z"></path></svg> Like`;
+            }
+        }
+
+
+        function escapeHTML(text) {
+
+            const div = document.createElement("div");
+
+            div.textContent = text;
+
+            return div.innerHTML;
+        }
+
+
+        document.getElementById("modal")
+            .addEventListener("click", function (e) {
+
+                if (e.target === this) {
+                    closeModal();
+                }
+
+            });
+
+
+        document.getElementById("searchInput")
+            .addEventListener("keyup", function (e) {
+
+                if (e.key === "Enter") {
+
+                    alert(
+                        "Searching for: " +
+                        this.value
+                    );
+
+                }
+
+            });
+
+    </script>
+
+</body>
+
+</html>
