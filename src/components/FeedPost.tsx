@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MoreHorizontal, Smile, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Smile, Trash2, ThumbsUp, MessageSquare, Repeat2, Send } from 'lucide-react';
 import { cn } from '../utils/utils';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { currentUser } from '../data/mockData';
-
-const LikeIcon = ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className={className}><path d="M19.46 11l-3.91-3.91a7 7 0 01-1.69-2.74l-.49-1.47A2.76 2.76 0 0010.76 1 2.75 2.75 0 008 3.74v4.24H3v1.59l2 8.57A2 2 0 006.94 20h9a2 2 0 002-1.56l2.17-8.73A1 1 0 0020 9h-6l5.46-5z"></path></svg>;
-const CommentIcon = ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className={className}><path d="M7 9h10v1H7zm0 4h7v-1H7zm16-2a6.78 6.78 0 01-2.84 5.61L12 22v-4H8A7 7 0 018 4h8a7 7 0 017 7z"></path></svg>;
-const RepostIcon = ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className={className}><path d="M23 12l-4.61 5L16 14.61l1.58-1.74H7a4 4 0 01-4-4V7h2v1.87a2 2 0 002 2h10.58L16 9.13 18.39 6.74z"></path></svg>;
-const SendIcon = ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className={className}><path d="M21 3L0 10l7.66 4.26L16 8l-6.26 8.34L14 24l7-21z"></path></svg>;
 
 interface PostProps {
   post: {
@@ -115,7 +110,7 @@ const FeedPost: React.FC<PostProps> = ({ post, onDelete }) => {
       <div className="px-3 sm:px-4 py-2 flex justify-between items-center border-b border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
         <div className="flex items-center gap-1 cursor-pointer hover:text-brand-600 hover:underline">
           <div className="bg-brand-500 rounded-full p-[3px]">
-            <LikeIcon className="text-white fill-current w-2.5 h-2.5" />
+            <ThumbsUp size={10} className="text-white fill-current" />
           </div>
           <span className="ml-1">{likesCount}</span>
         </div>
@@ -134,22 +129,22 @@ const FeedPost: React.FC<PostProps> = ({ post, onDelete }) => {
             liked ? "text-[#0a66c2]" : "text-gray-500 dark:text-gray-400"
           )}
         >
-          <LikeIcon className={cn(liked && "transition-transform scale-110")} />
+          <ThumbsUp size={24} className={cn(liked && "fill-current transition-transform scale-110")} />
           <span className="hidden sm:inline">Like</span>
         </button>
         <button 
           onClick={() => setShowComments(!showComments)}
           className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400 font-semibold text-sm"
         >
-          <CommentIcon />
+          <MessageSquare size={24} />
           <span className="hidden sm:inline">Comment</span>
         </button>
         <button className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400 font-semibold text-sm">
-          <RepostIcon />
+          <Repeat2 size={24} />
           <span className="hidden sm:inline">Repost</span>
         </button>
         <button className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400 font-semibold text-sm">
-          <SendIcon />
+          <Send size={24} />
           <span className="hidden sm:inline">Send</span>
         </button>
       </div>
